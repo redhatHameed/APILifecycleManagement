@@ -17,8 +17,9 @@ appname=$1
 echo "name of app to be deployed"
 mkdir $appname
 cd $appname
-git clone https://github.com/kasriniv/$appname.git
-oc login -u admin -p admin https://ec2-13-59-7-76.us-east-2.compute.amazonaws.com:8443
+git clone https://github.com/redhathameed/$appname.git
+oc login -u ahameed -p Sep2018 https://master.rhdp.ocp.cloud.lab.eng.bos.redhat.com:8443
+
 
 oc new-project $appname
 oc get projects
@@ -27,4 +28,4 @@ cd $appname
 pwd
 mvn fabric8:deploy -Popenshift
 sleep 100s
-curl http://vertx$appname-$appname.13.59.7.76.nip.io/$appname
+curl http://vertx$appname-$appname.app.rhdp.ocp.cloud.lab.eng.bos.redhat.com /$appname

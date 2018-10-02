@@ -8,4 +8,4 @@ echo $2
 echo "new app name"
 sed -i .bak 's/'$1'/'$2'/g' newservicedetails.yml
 sed -i .bak 's/'$1'/'$2'/g' updateservicedetails.yml
-ansible-playbook  -u ec2-user --inventory-file=ansiblehosts --private-key=/Volumes/D/KEYS/kavithaohio.pem updateservice.yml
+ansible-playbook   --inventory-file=ansiblehosts  updateservice.yml --connection=local

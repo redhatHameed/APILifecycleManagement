@@ -1,6 +1,6 @@
 ---
 - name: Hi K
-  hosts: ec2-13-59-7-76.us-east-2.compute.amazonaws.com
+  hosts: localhost
   tasks:
   - include_vars: ./newservicedetails.yml
   - name: create new service
@@ -8,6 +8,7 @@
       url: "{{url}}"
       method: "{{verb}}"
       body: "access_token={{access_token}}&name={{name}}&deployment_option={{deployment_option}}&backend_version={{backend_version}}&system_name={{system_name}}"
+      validate_certs: false
       return_content: yes
       status_code: "{{status_code}}"
     register: result
@@ -23,12 +24,14 @@
       url: "{{url}}/{{newserviceid}}/proxy.xml"
       method: "{{verb}}"
       body: "access_token={{access_token}}&name={{name}}&api_backend={{api_backend}}&endpoint={{endpoint}}&sandbox_endpoint={{sandbox}}"
+      validate_certs: false
       return_content: yes
       status_code: "{{status_code}}"
 
   - name: get default metric id ..change later to create a new metric and new method
     uri:
       url: "{{url}}/{{newserviceid}}/metrics.json"
+      validate_certs: false
       method: GET
       body: "access_token={{access_token}}"
       return_content: yes
@@ -43,6 +46,7 @@
       url: "{{url}}/{{newserviceid}}/proxy/mapping_rules.xml"
       method: POST
       body: "access_token={{access_token}}&http_method={{http_method}}&pattern={{pattern}}&delta={{delta}}&metric_id={{metricid.json.metrics[0].metric.id}}"
+      validate_certs: false
       return_content: yes
       status_code: 201
   - name: create an application plan
@@ -50,6 +54,7 @@
       url: "{{url}}/{{newserviceid}}/application_plans.json"
       method: POST
       body: "access_token={{access_token}}&name={{applicationplanname}}n&system_name={{applicationplansystemname}}"
+      validate_certs: false
       return_content: yes
       status_code: 201
       #body_format: json
@@ -63,6 +68,7 @@
       url: "{{basedomain}}/admin/api/accounts/{{accountid}}/applications.xml"
       method: POST
       body: "access_token={{access_token}}&plan_id={{example_plan_id}}&name={{applicationname}}&description={{applicationdescription}}+cd&user_key={{user_key}}"
+      validate_certs: false
       return_content: yes
       status_code: 201
 
@@ -71,7 +77,8 @@
 
   - name: quick test
     uri:
-      url: "{{sandbox}}/?user_key={{user_key}}"
+      url: "{{sandbox}}/customer?user_key={{user_key}}"
+      validate_certs: false
       method: GET
       return_content: yes
       status_code: 200 
